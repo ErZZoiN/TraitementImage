@@ -1,0 +1,78 @@
+﻿<Window x:Class="TraitementImage.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TraitementImage"
+        xmlns:wpfex="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="900"  Width="1800"
+        WindowState="Maximized">
+    <StackPanel>
+        <Menu>
+            <MenuItem Name="Files"
+                      Header="Files">
+                <MenuItem Name="Load"
+                          Header="Load"
+                          Click="Load_Click"/>
+                <MenuItem Name="Save"
+                          Header="Save"/>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="900"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="900"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="600"/>
+                <RowDefinition Height="200"/>
+            </Grid.RowDefinitions>
+            <Canvas Name="canvaWork"
+                    Grid.Column="0"
+                    Grid.Row="0"
+                    Height="600"
+                    Width="900">
+                <local:ZoomBorder x:Name="borderWork" ClipToBounds="True" Background="Gray" Height="600" Width="900">
+                    <Image Name="workImage">
+                        </Image>
+                    </local:ZoomBorder>
+            </Canvas>
+            <Button Name="ResultToWork"
+                    Grid.Column="1"
+                    Grid.Row="0"
+                    Click="ResultToWork_Click">
+                <Image Source="C:\\Users\\mrpar_000\\source\\repos\\TraitementImage\\TraitementImage\\workspace\\fleche.png"/>
+            </Button>
+            <local:ZoomBorder x:Name="borderResult" ClipToBounds="True" Background="Gray" Height="600" Width="900" Grid.Column="2"
+                       Grid.Row="0">
+                <Image Name="resultImage"/>
+            </local:ZoomBorder>
+            <Grid Grid.Row="1"
+                  Grid.ColumnSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Button Name="BlackAndWhite"
+                        Content="Noir et Blanc"
+                        Click="BlackAndWhite_Click"/>
+                <Button Name="Sepia"
+                        Grid.Row="1"
+                            Content="Sépia"
+                            Click="Sepia_Click"/>
+                <Button x:Name="clip"
+                        Grid.Column="1"
+                        Content="Rogner"
+                        Click="Clip_Click"/>
+            </Grid>
+        </Grid>
+    </StackPanel>
+</Window>
