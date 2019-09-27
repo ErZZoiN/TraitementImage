@@ -66,12 +66,16 @@
                         Click="BlackAndWhite_Click"/>
                 <Button Name="Sepia"
                         Grid.Row="1"
-                            Content="Sépia"
-                            Click="Sepia_Click"/>
+                        Content="Sépia"
+                        Click="Sepia_Click"/>
                 <Button x:Name="clip"
                         Grid.Column="1"
                         Content="Rogner"
                         Click="Clip_Click"/>
+                <wpfex:ColorPicker x:Name="Palette"
+                                   Grid.Column="1"
+                                   Grid.Row="1"
+                                   SelectedColorChanged="Palette_SelectedColorChanged"/>
             </Grid>
         </Grid>
     </StackPanel>

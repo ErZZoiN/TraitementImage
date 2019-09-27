@@ -45,7 +45,8 @@ namespace TraitementImage
         {
             Roi.Height = 0;
             Roi.Width = 0;
-        }
+
+            Rect = new Int32Rect(0, 0, 0, 0);        }
 
         private void BorderWork_SendRoi(Int32Rect roi)
         {
@@ -142,6 +143,13 @@ namespace TraitementImage
         private void Clip_Click(object sender, RoutedEventArgs e)
         {
             BitmapResult = OperationLibrary.Trim(borderWork, ConvertWriteableBitmapToBitmapImage(BitmapWork), Rect);
+            resultImage.Source = null;
+            resultImage.Source = BitmapResult;
+        }
+
+        private void Palette_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+        {
+            BitmapResult = OperationLibrary.PaletteChange(borderWork, ConvertWriteableBitmapToBitmapImage(BitmapWork), Rect, e.NewValue.Value);
             resultImage.Source = null;
             resultImage.Source = BitmapResult;
         }

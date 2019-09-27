@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
@@ -94,7 +95,8 @@ namespace TraitementImage
 
         public static Int32Rect RoiToPixel(ZoomBorder border, BitmapImage source, Int32Rect roi)
         {
-            WriteableBitmap wb = new WriteableBitmap(source);               // create the WritableBitmap using the source
+            if (roi == null || roi.Height == 0 || roi.Width == 0)
+                return new Int32Rect(0, 0, source.PixelWidth, source.PixelHeight);
 
             var st = border.GetScaleTransform(border.child);
             var tt = border.GetTranslateTransform(border.child);
@@ -122,6 +124,49 @@ namespace TraitementImage
             nb.WritePixels(new Int32Rect(0, 0, nb.PixelWidth, nb.PixelHeight), newBitmap, widthInBytes, 0);
 
             return nb;
+        }
+
+        public static WriteableBitmap PaletteChange(ZoomBorder border, BitmapImage source, Int32Rect roi, Color col)
+        {
+            WriteableBitmap wb = new WriteableBitmap(source);
+            roi = RoiToPixel(border, source, roi);
+            Console.WriteLine("début palette change");
+
+            int[] grayPixels = new int[wb.PixelWidth * wb.PixelHeight];
+            int widthInBytes = 4 * wb.PixelWidth;
+            wb.CopyPixels(grayPixels, widthInBytes, 0);
+
+
+            for (int x = 0; x < wb.PixelWidth * wb.PixelHeight; x++)
+            {
+                // get the pixel
+                int pixel = grayPixels[x];
+
+                // get the component
+                int red = (pixel & 0x00FF0000) >> 16;
+                int blue = (pixel & 0x0000FF00) >> 8;
+                int green = (pixel & 0x000000FF);
+
+                red += col.R;
+                green += col.G;
+                blue += col.B;
+
+                if (red > 255) red = 255;
+                if (blue > 255) blue = 255;
+                if (green > 255) green = 255;
+
+                // assign the gray values keep the alpha
+                unchecked
+                {
+                    grayPixels[x] = (int)((pixel & 0xFF000000) | (red << 16) | (blue << 8) | green);
+                }
+            }
+
+            Console.WriteLine("fin palette change");
+
+            wb.WritePixels(roi, grayPixels, widthInBytes, (roi.Y * source.PixelWidth) + roi.X);
+
+            return wb;
         }
     }
 }

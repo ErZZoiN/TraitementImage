@@ -191,7 +191,7 @@ namespace TraitementImage
                     {
                         SendRoi(Roi);
                     }
-                    catch (NullReferenceException)
+                    catch (NullReferenceException) //Si pas d'image loadée
                     { }
                 }
             }
