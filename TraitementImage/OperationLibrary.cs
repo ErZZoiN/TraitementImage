@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Drawing;
 
 namespace TraitementImage
 {
@@ -54,16 +55,16 @@ namespace TraitementImage
             return wb;
         }
 
-        public static WriteableBitmap ConvertToSepia(BitmapImage source, Int32Rect roi)
+        public static WriteableBitmap ConvertToSepia(ZoomBorder border, BitmapImage source, Int32Rect roi)
         {
-            WriteableBitmap wb = new WriteableBitmap(source);               // create the WritableBitmap using the source
+
+            WriteableBitmap wb = new WriteableBitmap(source);
 
             int[] grayPixels = new int[wb.PixelWidth * wb.PixelHeight];
             int widthInBytes = 4 * wb.PixelWidth;
-            wb.CopyPixels(grayPixels, widthInBytes, 0); 
+            wb.CopyPixels(grayPixels, widthInBytes, 0);
 
-            // lets use the average algo
-            //foreach(int x in index)
+            //foreach (int x in index)
             for (int x = 0; x < wb.PixelWidth * wb.PixelHeight; x++)
             {
                 // get the pixel
@@ -75,7 +76,6 @@ namespace TraitementImage
                 int green = (pixel & 0x000000FF);
 
                 // get the average
-
                 int nred = (byte)(red * 0.393 + green * 0.769 + blue * 0.189);
                 int ngreen = (byte)(red * 0.349 + green * 0.686 + blue * 0.168);
                 int nblue = (byte)(red * 0.272 + green * 0.534 + blue * 0.131);
@@ -89,6 +89,14 @@ namespace TraitementImage
                     grayPixels[x] = (int)((pixel & 0xFF000000) | (nred << 16) | (ngreen << 8) | nblue);
                 }
             }
+
+            if (roi.Height > 0 && roi.Width > 0)
+            {
+                roi = RoiToPixel(border, source, roi);
+                wb.WritePixels(roi, grayPixels, widthInBytes, (roi.Y * source.PixelWidth) + roi.X);
+            }
+            else
+                wb.WritePixels(new Int32Rect(0, 0, wb.PixelWidth, wb.PixelHeight), grayPixels, widthInBytes, 0);
 
             return wb;
         }
@@ -126,7 +134,7 @@ namespace TraitementImage
             return nb;
         }
 
-        public static WriteableBitmap PaletteChange(ZoomBorder border, BitmapImage source, Int32Rect roi, Color col)
+        public static WriteableBitmap PaletteChange(ZoomBorder border, BitmapImage source, Int32Rect roi, System.Windows.Media.Color col)
         {
             WriteableBitmap wb = new WriteableBitmap(source);
             roi = RoiToPixel(border, source, roi);
@@ -144,8 +152,8 @@ namespace TraitementImage
 
                 // get the component
                 int red = (pixel & 0x00FF0000) >> 16;
-                int blue = (pixel & 0x0000FF00) >> 8;
-                int green = (pixel & 0x000000FF);
+                int green = (pixel & 0x0000FF00) >> 8;
+                int blue = (pixel & 0x000000FF);
 
                 red += col.R;
                 green += col.G;
@@ -158,7 +166,7 @@ namespace TraitementImage
                 // assign the gray values keep the alpha
                 unchecked
                 {
-                    grayPixels[x] = (int)((pixel & 0xFF000000) | (red << 16) | (blue << 8) | green);
+                    grayPixels[x] = (int)((pixel & 0xFF000000) | (red << 16) | (green << 8) | blue);
                 }
             }
 
@@ -167,6 +175,78 @@ namespace TraitementImage
             wb.WritePixels(roi, grayPixels, widthInBytes, (roi.Y * source.PixelWidth) + roi.X);
 
             return wb;
+        }
+
+        public static float Lerp(float s, float e, float t)
+        {
+            return s + (e - s) * t;
+        }
+
+        public static float Blerp(float c00, float c10, float c01, float c11, float tx, float ty)
+        {
+            return Lerp(Lerp(c00, c10, tx), Lerp(c01, c11, tx), ty);
+        }
+
+        public static Bitmap Scale(Bitmap self, double scaleX, double scaleY)
+        {
+            int newWidth = (int)(self.Width * scaleX);
+            int newHeight = (int)(self.Height * scaleY);
+            Bitmap newImage = new Bitmap(newWidth, newHeight, self.PixelFormat);
+
+            for (int x = 0; x < newWidth; x++)
+            {
+                for (int y = 0; y < newHeight; y++)
+                {
+                    float gx = ((float)x) / newWidth * (self.Width - 1);
+                    float gy = ((float)y) / newHeight * (self.Height - 1);
+                    int gxi = (int)gx;
+                    int gyi = (int)gy;
+                    System.Drawing.Color c00 = self.GetPixel(gxi, gyi);
+                    System.Drawing.Color c10 = self.GetPixel(gxi + 1, gyi);
+                    System.Drawing.Color c01 = self.GetPixel(gxi, gyi + 1);
+                    System.Drawing.Color c11 = self.GetPixel(gxi + 1, gyi + 1);
+
+                    int red = (int)Blerp(c00.R, c10.R, c01.R, c11.R, gx - gxi, gy - gyi);
+                    int green = (int)Blerp(c00.G, c10.G, c01.G, c11.G, gx - gxi, gy - gyi);
+                    int blue = (int)Blerp(c00.B, c10.B, c01.B, c11.B, gx - gxi, gy - gyi);
+                    System.Drawing.Color rgb = System.Drawing.Color.FromArgb(red, green, blue);
+                    newImage.SetPixel(x, y, rgb);
+                }
+            }
+
+            return newImage;
+        }
+
+        public static Bitmap createHistogram(Bitmap bmp)
+        {
+            int[] histogram_r = new int[256];
+            float max = 0;
+
+            for (int i = 0; i < bmp.Width; i++)
+            {
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    int redValue = bmp.GetPixel(i, j).R;
+                    histogram_r[redValue]++;
+                    if (max < histogram_r[redValue])
+                        max = histogram_r[redValue];
+                }
+            }
+
+            int histHeight = 128;
+            Bitmap img = new Bitmap(256, histHeight + 10);
+            using (Graphics g = Graphics.FromImage(img))
+            {
+                for (int i = 0; i < histogram_r.Length; i++)
+                {
+                    float pct = histogram_r[i] / max;   // What percentage of the max is this value?
+                    g.DrawLine(Pens.Black,
+                        new System.Drawing.Point(i, img.Height - 5),
+                        new System.Drawing.Point(i, img.Height - 5 - (int)(pct * histHeight))  // Use that percentage of the height
+                        );
+                }
+            }
+            return img;
         }
     }
 }

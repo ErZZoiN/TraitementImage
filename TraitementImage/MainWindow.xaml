@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TraitementImage"
         xmlns:wpfex="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900"  Width="1800"
+        Title="MainWindow" Height="1000"  Width="1800"
         WindowState="Maximized">
     <StackPanel>
         <Menu>
@@ -27,7 +27,8 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="600"/>
-                <RowDefinition Height="200"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Canvas Name="canvaWork"
                     Grid.Column="0"
@@ -43,7 +44,7 @@
                     Grid.Column="1"
                     Grid.Row="0"
                     Click="ResultToWork_Click">
-                <Image Source="C:\\Users\\mrpar_000\\source\\repos\\TraitementImage\\TraitementImage\\workspace\\fleche.png"/>
+                <!--<Image Source="C:\\Users\\mrpar_000\\source\\repos\\TraitementImage\\TraitementImage\\workspace\\fleche.png"/>-->
             </Button>
             <local:ZoomBorder x:Name="borderResult" ClipToBounds="True" Background="Gray" Height="600" Width="900" Grid.Column="2"
                        Grid.Row="0">
@@ -76,7 +77,40 @@
                                    Grid.Column="1"
                                    Grid.Row="1"
                                    SelectedColorChanged="Palette_SelectedColorChanged"/>
+                <StackPanel Orientation="Vertical"
+                            Grid.Column="2"
+                            Grid.Row="0"
+                            Grid.RowSpan="2">
+                    <Label Content="Expansion/extraction"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="scaleX"/>
+                        <Slider x:Name="scaleX"
+                                Maximum="10"
+                                Minimum="0.1"
+                                TickFrequency="0.1" Value="1"
+                                Width="500"
+                                ValueChanged="Scale_ValueChanged"
+                                ToolTipService.ToolTip="{Binding Path=Value, ElementName=scaleX}"/>
+                        <Label Content="{Binding Path=Value, ElementName=scaleX}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="scaleY"/>
+                        <Slider x:Name="scaleY"
+                                Maximum="10"
+                                Minimum="0.1"
+                                TickFrequency="0.1" Value="1"
+                                Width="500"
+                                ValueChanged="Scale_ValueChanged"
+                                ToolTipService.ToolTip="{Binding Path=Value, ElementName=scaleY}"/>
+                        <Label Content="{Binding Path=Value, ElementName=scaleY}"/>
+                    </StackPanel>
+                </StackPanel>
             </Grid>
+            <Image x:Name="workHistogram"
+                   Grid.Row="2"/>
+            <Image x:Name="resultHistogram"
+                   Grid.Row="2"
+                   Grid.Column="2"/>
         </Grid>
     </StackPanel>
 </Window>
