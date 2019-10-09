@@ -10,6 +10,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace TraitementImage
 {
@@ -226,10 +228,10 @@ namespace TraitementImage
             {
                 for (int j = 0; j < bmp.Height; j++)
                 {
-                    int redValue = bmp.GetPixel(i, j).R;
-                    histogram_r[redValue]++;
-                    if (max < histogram_r[redValue])
-                        max = histogram_r[redValue];
+                    int Value = (bmp.GetPixel(i, j).R + bmp.GetPixel(i, j).G + bmp.GetPixel(i, j).B)/3;
+                    histogram_r[Value]++;
+                    if (max < histogram_r[Value])
+                        max = histogram_r[Value];
                 }
             }
 
@@ -247,6 +249,66 @@ namespace TraitementImage
                 }
             }
             return img;
+        }
+
+        public static Bitmap Threshhold(int min, int max,int val, Bitmap bmp) //Les seuils doivent arriver triés
+        {
+            Bitmap ret = new Bitmap(bmp);
+            for (int i = 0; i < bmp.Width; i++)
+            {
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    int valeur = (bmp.GetPixel(i, j).R + bmp.GetPixel(i, j).G + bmp.GetPixel(i, j).B) / 3;
+                    if(valeur<max && valeur>min)
+                    {
+                        ret.SetPixel(i, j, System.Drawing.Color.FromArgb(val, val, val));
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+        public static Bitmap HistEq(Bitmap img)
+        {
+            int w = img.Width;
+            int h = img.Height;
+
+            Bitmap res = new Bitmap(img);
+
+            int[] hist = new int[256];
+
+            for(int i =0;i<w;i++)
+            {
+                for(int j=0;j<h;j++)
+                {
+                    hist[img.GetPixel(i, j).B]++;
+                }
+            }
+
+            int[] cumulatedHistogram = new int[256];
+            cumulatedHistogram[0] = hist[0];
+            for(int i =1;i<256;i++)
+            {
+                cumulatedHistogram[i] = cumulatedHistogram[i - 1] + hist[i];
+            }
+
+            float[] arr = new float[256];
+            for(int i =0;i<256;i++)
+            {
+                arr[i] = (float)((cumulatedHistogram[i] * 255.0) / (float)(w*h));
+            }
+
+            for (int x = 0; x < w; x++)
+            {
+                for (int y = 0; y < h; y++)
+                {
+                    int nVal = (int)arr[img.GetPixel(i, j).B];
+                    res.SetPixel(x, y, System.Drawing.Color.FromArgb(nVal, nVal, nVal));
+                }
+            }
+
+            return res;
         }
     }
 }

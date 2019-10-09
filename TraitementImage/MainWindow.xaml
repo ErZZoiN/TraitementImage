@@ -69,6 +69,15 @@
                         Grid.Row="1"
                         Content="Sépia"
                         Click="Sepia_Click"/>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Column="0"
+                            Grid.Row="3">
+                    <wpfex:IntegerUpDown Name="nbrTresh"
+                                         Minimum="1"/>
+                    <Button Name="threshold"
+                            Content="Seuillage"
+                            Click="Threshold_Click"/>
+                </StackPanel>
                 <Button x:Name="clip"
                         Grid.Column="1"
                         Content="Rogner"

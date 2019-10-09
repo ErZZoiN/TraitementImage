@@ -205,5 +205,11 @@ namespace TraitementImage
             workHistogram.Source = ToBitmapImage(OperationLibrary.createHistogram(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork))));
             resultHistogram.Source = ToBitmapImage(OperationLibrary.createHistogram(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapResult))));
         }
+
+        private void Threshold_Click(object sender, RoutedEventArgs e)
+        {
+            ThreshholdSelector ts = new ThreshholdSelector(nbrTresh.Value.Value, this);
+            ts.Show();
+        }
     }
 }
