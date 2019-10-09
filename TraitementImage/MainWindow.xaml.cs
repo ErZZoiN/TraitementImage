@@ -185,7 +185,7 @@ namespace TraitementImage
             applyChange();
         }
 
-        private void Scale_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void Scale_ValueChanged(object sender, EventArgs e)
         {
             try
             {
@@ -210,6 +210,29 @@ namespace TraitementImage
         {
             ThreshholdSelector ts = new ThreshholdSelector(nbrTresh.Value.Value, this);
             ts.Show();
+        }
+
+        private void Equalization_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                BitmapResult = new WriteableBitmap(ToBitmapImage(OperationLibrary.HistEq(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)))));
+                applyChange();
+            }
+            catch (ArgumentNullException) { };
+        }
+
+        public void multiThreshHold(Thresh[] ttable)
+        {
+            foreach(Thresh t in ttable)
+            {
+                try
+                {
+                    BitmapResult = new WriteableBitmap(ToBitmapImage(OperationLibrary.Threshhold(t, BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)))));
+                    applyChange();
+                }
+                catch (ArgumentNullException) { };
+            }
         }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TraitementImage"
         xmlns:wpfex="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1000"  Width="1800"
+        Title="MainWindow" Height="1000"  Width="1450"
         WindowState="Maximized">
     <StackPanel>
         <Menu>
@@ -21,12 +21,12 @@
         </Menu>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="900"/>
+                <ColumnDefinition Width="750"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="900"/>
+                <ColumnDefinition Width="750"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="600"/>
+                <RowDefinition Height="450"/>
                 <RowDefinition Height="150"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
@@ -35,7 +35,7 @@
                     Grid.Row="0"
                     Height="600"
                     Width="900">
-                <local:ZoomBorder x:Name="borderWork" ClipToBounds="True" Background="Gray" Height="600" Width="900">
+                <local:ZoomBorder x:Name="borderWork" ClipToBounds="True" Background="Gray" Height="450" Width="675">
                     <Image Name="workImage">
                         </Image>
                     </local:ZoomBorder>
@@ -46,7 +46,7 @@
                     Click="ResultToWork_Click">
                 <!--<Image Source="C:\\Users\\mrpar_000\\source\\repos\\TraitementImage\\TraitementImage\\workspace\\fleche.png"/>-->
             </Button>
-            <local:ZoomBorder x:Name="borderResult" ClipToBounds="True" Background="Gray" Height="600" Width="900" Grid.Column="2"
+            <local:ZoomBorder x:Name="borderResult" ClipToBounds="True" Background="Gray" Height="450" Width="675" Grid.Column="2"
                        Grid.Row="0">
                 <Image Name="resultImage"/>
             </local:ZoomBorder>
@@ -82,6 +82,11 @@
                         Grid.Column="1"
                         Content="Rogner"
                         Click="Clip_Click"/>
+                <Button Name="equalization"
+                        Grid.Column="1"
+                        Grid.Row="2"
+                        Content="Egalisation"
+                        Click="Equalization_Click"/>
                 <wpfex:ColorPicker x:Name="Palette"
                                    Grid.Column="1"
                                    Grid.Row="1"
@@ -100,7 +105,8 @@
                                 Width="500"
                                 ValueChanged="Scale_ValueChanged"
                                 ToolTipService.ToolTip="{Binding Path=Value, ElementName=scaleX}"/>
-                        <Label Content="{Binding Path=Value, ElementName=scaleX}"/>
+                        <TextBox Text="{Binding Path=Value, ElementName=scaleX}"
+                                 TextChanged="Scale_ValueChanged"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="scaleY"/>
@@ -111,7 +117,8 @@
                                 Width="500"
                                 ValueChanged="Scale_ValueChanged"
                                 ToolTipService.ToolTip="{Binding Path=Value, ElementName=scaleY}"/>
-                        <Label Content="{Binding Path=Value, ElementName=scaleY}"/>
+                        <TextBox Text="{Binding Path=Value, ElementName=scaleY}"
+                                 TextChanged="Scale_ValueChanged"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>

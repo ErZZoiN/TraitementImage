@@ -251,7 +251,7 @@ namespace TraitementImage
             return img;
         }
 
-        public static Bitmap Threshhold(int min, int max,int val, Bitmap bmp) //Les seuils doivent arriver triés
+        public static Bitmap Threshhold(Thresh t, Bitmap bmp) //Les seuils doivent arriver triés
         {
             Bitmap ret = new Bitmap(bmp);
             for (int i = 0; i < bmp.Width; i++)
@@ -259,9 +259,9 @@ namespace TraitementImage
                 for (int j = 0; j < bmp.Height; j++)
                 {
                     int valeur = (bmp.GetPixel(i, j).R + bmp.GetPixel(i, j).G + bmp.GetPixel(i, j).B) / 3;
-                    if(valeur<max && valeur>min)
+                    if(valeur<t.max && valeur>t.min)
                     {
-                        ret.SetPixel(i, j, System.Drawing.Color.FromArgb(val, val, val));
+                        ret.SetPixel(i, j, System.Drawing.Color.FromArgb(t.val, t.val, t.val));
                     }
                 }
             }
@@ -303,7 +303,7 @@ namespace TraitementImage
             {
                 for (int y = 0; y < h; y++)
                 {
-                    int nVal = (int)arr[img.GetPixel(i, j).B];
+                    int nVal = (int)arr[img.GetPixel(x, y).B];
                     res.SetPixel(x, y, System.Drawing.Color.FromArgb(nVal, nVal, nVal));
                 }
             }

@@ -18,9 +18,19 @@ namespace TraitementImage
     /// <summary>
     /// Logique d'interaction pour ThreshholdSelector.xaml
     /// </summary>
+    /// 
+
+    public struct Thresh
+    {
+        public int min;
+        public int max;
+        public int val;
+    }
+
     public partial class ThreshholdSelector : Window
     {
         private MainWindow _mainwindow;
+        private int _nbt;
 
         public ThreshholdSelector()
         {
@@ -50,9 +60,19 @@ namespace TraitementImage
 
         private void B_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            Thresh[] threshList = new Thresh[Nbt];
+
+            for(int i = 0;i<Nbt;i++)
+            {
+                threshList[i].min = ((IntegerUpDown)VisualTreeHelper.GetChild(sp, 4*i+1)).Value.Value;
+                threshList[i].val = ((IntegerUpDown)VisualTreeHelper.GetChild(sp, 4*i+2)).Value.Value;
+                threshList[i].max = ((IntegerUpDown)VisualTreeHelper.GetChild(sp, 4*i+3)).Value.Value;
+            }
+            Mainwindow.multiThreshHold(threshList);
+            this.Close();
         }
 
         public MainWindow Mainwindow { get => _mainwindow; set => _mainwindow = value; }
+        public int Nbt { get => _nbt; set => _nbt = value; }
     }
 }
