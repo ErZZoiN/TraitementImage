@@ -40,6 +40,7 @@ namespace TraitementImage
         public ThreshholdSelector(int nbrThresh, MainWindow mw)
         {
             Mainwindow = mw;
+            Nbt = nbrThresh;
 
             var b = new Button();
             InitializeComponent();
@@ -61,7 +62,7 @@ namespace TraitementImage
         private void B_Click(object sender, RoutedEventArgs e)
         {
             Thresh[] threshList = new Thresh[Nbt];
-
+            Console.WriteLine("coucou");
             for(int i = 0;i<Nbt;i++)
             {
                 threshList[i].min = ((IntegerUpDown)VisualTreeHelper.GetChild(sp, 4*i+1)).Value.Value;

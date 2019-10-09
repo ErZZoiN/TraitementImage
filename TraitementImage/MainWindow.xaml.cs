@@ -26,6 +26,8 @@ namespace TraitementImage
     public partial class MainWindow : Window
     {
         private string _workspace;
+        private int tt;
+        private int histonoff = 1;
         private WriteableBitmap _bitmapresult;
         private WriteableBitmap _bitmapwork;
         private Int32Rect _rect;
@@ -138,7 +140,6 @@ namespace TraitementImage
                 enc.Frames.Add(BitmapFrame.Create(bitmapImage));
                 enc.Save(outStream);
                 System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(outStream);
-
                 return new Bitmap(bitmap);
             }
         }
@@ -191,6 +192,14 @@ namespace TraitementImage
             {
                 BitmapResult = new WriteableBitmap(ToBitmapImage(OperationLibrary.Scale(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)), scaleX.Value, scaleY.Value)));
                 applyChange();
+                if (tt == 0)
+                {
+                    textScaleX.Text = scaleX.Value.ToString();
+                    textScaleY.Text = scaleY.Value.ToString();
+                    tt = 1;
+                }
+                else
+                    tt = 0;
             }
             catch (ArgumentNullException) { };
         }
@@ -202,8 +211,11 @@ namespace TraitementImage
             workImage.Source = null;
             workImage.Source = BitmapWork;
 
-            workHistogram.Source = ToBitmapImage(OperationLibrary.createHistogram(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork))));
-            resultHistogram.Source = ToBitmapImage(OperationLibrary.createHistogram(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapResult))));
+            if (histonoff == 1)
+            {
+                workHistogram.Source = ToBitmapImage(OperationLibrary.createHistogram(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork))));
+                resultHistogram.Source = ToBitmapImage(OperationLibrary.createHistogram(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapResult))));
+            }
         }
 
         private void Threshold_Click(object sender, RoutedEventArgs e)
@@ -224,14 +236,47 @@ namespace TraitementImage
 
         public void multiThreshHold(Thresh[] ttable)
         {
+            WriteableBitmap tmp = new WriteableBitmap(BitmapWork);
             foreach(Thresh t in ttable)
             {
                 try
                 {
-                    BitmapResult = new WriteableBitmap(ToBitmapImage(OperationLibrary.Threshhold(t, BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)))));
-                    applyChange();
+                    tmp = new WriteableBitmap(ToBitmapImage(OperationLibrary.Threshhold(t, BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(tmp)))));
                 }
-                catch (ArgumentNullException) { };
+                catch (ArgumentNullException ex) { Console.WriteLine("exception multithreshold : " + ex.Message); };
+            }
+            BitmapResult = tmp;
+            applyChange();
+        }
+
+        private void TextScaleY_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if (tt == 0)
+                {
+                    scaleX.Value = Int32.Parse(textScaleX.Text);
+                    scaleY.Value = Int32.Parse(textScaleY.Text);
+                    tt = 1;
+                }
+                else
+                    tt = 0;
+            }
+            catch (NullReferenceException) { }
+            catch (FormatException) { }
+        }
+
+        private void HistOnOff_Click(object sender, RoutedEventArgs e)
+        {
+            if (histonoff == 1)
+            {
+                histonoff = 0;
+                histOnOff.Content = "Histogramme : off";
+            }
+            else
+            {
+                histonoff = 1;
+                histOnOff.Content = "Histogramme : on";
             }
         }
     }

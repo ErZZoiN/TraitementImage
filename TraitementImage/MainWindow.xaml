@@ -87,6 +87,11 @@
                         Grid.Row="2"
                         Content="Egalisation"
                         Click="Equalization_Click"/>
+                <Button x:Name="histOnOff"
+                        Content="Histogramme : on"
+                        Click="HistOnOff_Click"
+                        Grid.Column="2"
+                        Grid.Row="2"/>
                 <wpfex:ColorPicker x:Name="Palette"
                                    Grid.Column="1"
                                    Grid.Row="1"
@@ -105,8 +110,9 @@
                                 Width="500"
                                 ValueChanged="Scale_ValueChanged"
                                 ToolTipService.ToolTip="{Binding Path=Value, ElementName=scaleX}"/>
-                        <TextBox Text="{Binding Path=Value, ElementName=scaleX}"
-                                 TextChanged="Scale_ValueChanged"/>
+                        <TextBox x:Name="textScaleX"
+                                Text="1"
+                                 TextChanged="TextScaleY_TextChanged"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="scaleY"/>
@@ -117,8 +123,9 @@
                                 Width="500"
                                 ValueChanged="Scale_ValueChanged"
                                 ToolTipService.ToolTip="{Binding Path=Value, ElementName=scaleY}"/>
-                        <TextBox Text="{Binding Path=Value, ElementName=scaleY}"
-                                 TextChanged="Scale_ValueChanged"/>
+                        <TextBox x:Name="textScaleY"
+                                 Text="1"
+                                 TextChanged="TextScaleY_TextChanged"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>

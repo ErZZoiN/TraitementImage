@@ -191,6 +191,7 @@ namespace TraitementImage
 
         public static Bitmap Scale(Bitmap self, double scaleX, double scaleY)
         {
+            Console.WriteLine("debut blerp");
             int newWidth = (int)(self.Width * scaleX);
             int newHeight = (int)(self.Height * scaleY);
             Bitmap newImage = new Bitmap(newWidth, newHeight, self.PixelFormat);
@@ -216,11 +217,13 @@ namespace TraitementImage
                 }
             }
 
+            Console.WriteLine("fin blerp");
             return newImage;
         }
 
         public static Bitmap createHistogram(Bitmap bmp)
         {
+            Console.WriteLine("debut create hist");
             int[] histogram_r = new int[256];
             float max = 0;
 
@@ -248,10 +251,11 @@ namespace TraitementImage
                         );
                 }
             }
+            Console.WriteLine("fin create hist");
             return img;
         }
 
-        public static Bitmap Threshhold(Thresh t, Bitmap bmp) //Les seuils doivent arriver triés
+        public static Bitmap Threshhold(Thresh t, Bitmap bmp)
         {
             Bitmap ret = new Bitmap(bmp);
             for (int i = 0; i < bmp.Width; i++)
@@ -259,7 +263,7 @@ namespace TraitementImage
                 for (int j = 0; j < bmp.Height; j++)
                 {
                     int valeur = (bmp.GetPixel(i, j).R + bmp.GetPixel(i, j).G + bmp.GetPixel(i, j).B) / 3;
-                    if(valeur<t.max && valeur>t.min)
+                    if(valeur<t.max && valeur>=t.min)
                     {
                         ret.SetPixel(i, j, System.Drawing.Color.FromArgb(t.val, t.val, t.val));
                     }
