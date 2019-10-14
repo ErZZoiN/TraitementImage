@@ -188,7 +188,7 @@ namespace TraitementImage
 
         private void Scale_ValueChanged(object sender, EventArgs e)
         {
-            try
+            /*try
             {
                 BitmapResult = new WriteableBitmap(ToBitmapImage(OperationLibrary.Scale(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)), scaleX.Value, scaleY.Value)));
                 applyChange();
@@ -201,7 +201,10 @@ namespace TraitementImage
                 else
                     tt = 0;
             }
-            catch (ArgumentNullException) { };
+            catch (ArgumentNullException) { };*/
+
+            BitmapResult = new WriteableBitmap(ToBitmapImage(OperationLibrary.Scale(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)),float.Parse(scaleX.Text), float.Parse(scaleY.Text))));
+            applyChange();
         }
 
         private void applyChange()
@@ -251,7 +254,7 @@ namespace TraitementImage
 
         private void TextScaleY_TextChanged(object sender, TextChangedEventArgs e)
         {
-            try
+           /* try
             {
                 if (tt == 0)
                 {
@@ -263,7 +266,7 @@ namespace TraitementImage
                     tt = 0;
             }
             catch (NullReferenceException) { }
-            catch (FormatException) { }
+            catch (FormatException) { }*/
         }
 
         private void HistOnOff_Click(object sender, RoutedEventArgs e)
@@ -278,6 +281,11 @@ namespace TraitementImage
                 histonoff = 1;
                 histOnOff.Content = "Histogramme : on";
             }
+        }
+
+        private void Filter_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

@@ -179,6 +179,7 @@ namespace TraitementImage
             return wb;
         }
 
+        //interpolation entre s et e à "l'indice" t
         public static float Lerp(float s, float e, float t)
         {
             return s + (e - s) * t;

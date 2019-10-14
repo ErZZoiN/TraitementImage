@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:TraitementImage"
         xmlns:wpfex="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1000"  Width="1450"
+        Title="MainWindow" Height="1000"  Width="1250"
         WindowState="Maximized">
     <StackPanel>
         <Menu>
@@ -44,7 +44,7 @@
                     Grid.Column="1"
                     Grid.Row="0"
                     Click="ResultToWork_Click">
-                <!--<Image Source="C:\\Users\\mrpar_000\\source\\repos\\TraitementImage\\TraitementImage\\workspace\\fleche.png"/>-->
+                <Image Source="C:\\Users\\mrpar_000\\source\\repos\\TraitementImage\\TraitementImage\\workspace\\fleche.png"/>
             </Button>
             <local:ZoomBorder x:Name="borderResult" ClipToBounds="True" Background="Gray" Height="450" Width="675" Grid.Column="2"
                        Grid.Row="0">
@@ -53,6 +53,7 @@
             <Grid Grid.Row="1"
                   Grid.ColumnSpan="3">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -96,37 +97,34 @@
                                    Grid.Column="1"
                                    Grid.Row="1"
                                    SelectedColorChanged="Palette_SelectedColorChanged"/>
-                <StackPanel Orientation="Vertical"
+                <StackPanel Orientation="Horizontal"
                             Grid.Column="2"
-                            Grid.Row="0"
-                            Grid.RowSpan="2">
-                    <Label Content="Expansion/extraction"/>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="scaleX"/>
-                        <Slider x:Name="scaleX"
-                                Maximum="10"
-                                Minimum="0.1"
-                                TickFrequency="0.1" Value="1"
-                                Width="500"
-                                ValueChanged="Scale_ValueChanged"
-                                ToolTipService.ToolTip="{Binding Path=Value, ElementName=scaleX}"/>
-                        <TextBox x:Name="textScaleX"
-                                Text="1"
-                                 TextChanged="TextScaleY_TextChanged"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="scaleY"/>
-                        <Slider x:Name="scaleY"
-                                Maximum="10"
-                                Minimum="0.1"
-                                TickFrequency="0.1" Value="1"
-                                Width="500"
-                                ValueChanged="Scale_ValueChanged"
-                                ToolTipService.ToolTip="{Binding Path=Value, ElementName=scaleY}"/>
-                        <TextBox x:Name="textScaleY"
-                                 Text="1"
-                                 TextChanged="TextScaleY_TextChanged"/>
-                    </StackPanel>
+                            Grid.Row="0">
+                    <Label Content="scale X"/>
+                    <TextBox Name="scaleX" Width="50"/>
+                    <Label Content="scale Y"/>
+                    <TextBox Name="scaleY" Width="50"/>
+                    <Button Name="scaleButton"
+                            Content="Valider"
+                            Click="Scale_ValueChanged"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Column="3">
+                    <ListBox Name="listFilter">
+                        <ListBoxItem Content="Gauss"/>
+                        <ListBoxItem Content="Sobel"/>
+                        <ListBoxItem Content="Prewitt"/>
+                        <ListBoxItem Content="Kirsch"/>
+                        <ListBoxItem Content="Roberts"/>
+                        <ListBoxItem Content="Moyen"/>
+                        <ListBoxItem Content="Median"/>
+                        <ListBoxItem Content="Laplace"/>
+                    </ListBox>
+                    <wpfex:IntegerUpDown Name="dimFilter"/>
+                    <TextBox Name="stDevFilter"/>
+                    <Button Name="Filter"
+                            Content="Filtrer"
+                            Click="Filter_Click"/>
                 </StackPanel>
             </Grid>
             <Image x:Name="workHistogram"
