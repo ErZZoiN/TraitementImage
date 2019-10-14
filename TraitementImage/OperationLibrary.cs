@@ -237,17 +237,16 @@ namespace TraitementImage
                         max = histogram_r[Value];
                 }
             }
-
             int histHeight = 128;
             Bitmap img = new Bitmap(256, histHeight + 10);
             using (Graphics g = Graphics.FromImage(img))
             {
                 for (int i = 0; i < histogram_r.Length; i++)
                 {
-                    float pct = histogram_r[i] / max;   // What percentage of the max is this value?
+                    float pct = histogram_r[i] / max;
                     g.DrawLine(Pens.Black,
                         new System.Drawing.Point(i, img.Height - 5),
-                        new System.Drawing.Point(i, img.Height - 5 - (int)(pct * histHeight))  // Use that percentage of the height
+                        new System.Drawing.Point(i, img.Height - 5 - (int)(pct * histHeight))
                         );
                 }
             }
@@ -279,7 +278,6 @@ namespace TraitementImage
             int h = img.Height;
 
             Bitmap res = new Bitmap(img);
-
             int[] hist = new int[256];
 
             for(int i =0;i<w;i++)
