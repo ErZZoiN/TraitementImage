@@ -73,6 +73,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GaussianFilter.cs" />
+    <Compile Include="Kernel.cs" />
     <Compile Include="OperationLibrary.cs" />
     <Compile Include="ThreshholdSelector.xaml.cs">
       <DependentUpon>ThreshholdSelector.xaml</DependentUpon>
