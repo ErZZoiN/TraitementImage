@@ -285,7 +285,75 @@ namespace TraitementImage
 
         private void Filter_Click(object sender, RoutedEventArgs e)
         {
+            Kernel k;
+            if(listFilter.SelectedValue.ToString() == "Gauss")
+            {
+                k = new GaussianFilter(float.Parse(dimFilter.Text));
+            }
+            else if(listFilter.SelectedValue.ToString() == "Laplace")
+            {
+                k = new LaplacianFilter(Int32.Parse(dimFilter.Text) == 0);
+            }
+            else if(listFilter.SelectedValue.ToString() == "Ordre")
+            {
+                k = new OrderFilter(Int32.Parse(dimFilter.Text));
+            }
+            else if(listFilter.SelectedValue.ToString() == "Moyen")
+            {
+                k = new MeanFilter(Int32.Parse(dimFilter.Text));
+            }
+            else //Alors on calcul le gradient, la methode est differente
+            {
+                Kernel k2;
+                if (listFilter.SelectedValue.ToString() == "Sobel")
+                {
+                    k = new SobelFilter(true);
+                    k2 = new SobelFilter(false);
+                }
+                else if (listFilter.SelectedValue.ToString() == "Prewitt")
+                {
+                    k = new PrewittFilter(true);
+                    k2 = new PrewittFilter(false);
+                }
+                else if (listFilter.SelectedValue.ToString() == "Roberts")
+                {
+                    k = new RobertsFilter(true);
+                    k2 = new RobertsFilter(false);
+                }
+                else return;
 
+                Bitmap verticalDerive = k.filter(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)));
+                Bitmap horizontalDerive = k2.filter(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)));
+                BitmapResult = new WriteableBitmap(ToBitmapImage(OperationLibrary.Gradient(horizontalDerive, verticalDerive)));
+
+                applyChange();
+                return;
+            }
+
+            BitmapResult = new WriteableBitmap(ToBitmapImage(k.filter(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)))));
+
+            applyChange();
+        }
+
+        private void listFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Console.WriteLine(listFilter.SelectedValue.ToString());
+            dimFilter.IsEnabled = true;
+            dimLabel.Content = "dim : ";
+            if (listFilter.SelectedValue.ToString() == "Gauss")
+            {
+                dimLabel.Content = "Sigma : ";
+            }
+            else if (listFilter.SelectedValue.ToString() == "Laplace")
+            {
+                dimLabel.Content = "Diag ? ";
+            }
+            else if (listFilter.SelectedValue.ToString() == "Ordre")
+            {
+                dimLabel.Content = "Ordre : ";
+            }
+            else if (listFilter.SelectedValue.ToString() != "Moyen")
+                dimFilter.IsEnabled = false;
         }
     }
 }

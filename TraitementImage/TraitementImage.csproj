@@ -75,7 +75,13 @@
     </ApplicationDefinition>
     <Compile Include="GaussianFilter.cs" />
     <Compile Include="Kernel.cs" />
+    <Compile Include="LaplacianFilter.cs" />
+    <Compile Include="MeanFilter.cs" />
     <Compile Include="OperationLibrary.cs" />
+    <Compile Include="OrderFilter.cs" />
+    <Compile Include="PrewittFilter.cs" />
+    <Compile Include="RobertsFilter.cs" />
+    <Compile Include="SobelFilter.cs" />
     <Compile Include="ThreshholdSelector.xaml.cs">
       <DependentUpon>ThreshholdSelector.xaml</DependentUpon>
     </Compile>

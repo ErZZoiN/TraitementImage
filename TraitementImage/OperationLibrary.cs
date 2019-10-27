@@ -313,5 +313,25 @@ namespace TraitementImage
 
             return res;
         }
+
+        public static Bitmap Gradient(Bitmap horizontalDer, Bitmap verticalDer)
+        {
+            Bitmap result = new Bitmap(horizontalDer);
+            for(int x=0;x<horizontalDer.Width;x++)
+            {
+                for(int y=0;y<horizontalDer.Height;y++)
+                {
+                    double val;
+                    val = horizontalDer.GetPixel(x, y).R * horizontalDer.GetPixel(x, y).R;
+                    val += verticalDer.GetPixel(x, y).R * verticalDer.GetPixel(x, y).R;
+                    val =Math.Sqrt(val);
+                    if (val > 255)
+                        val = 255;
+                    result.SetPixel(x, y, System.Drawing.Color.FromArgb((int)val, (int)val, (int)val));
+                }
+            }
+
+            return result;
+        }
     }
 }
