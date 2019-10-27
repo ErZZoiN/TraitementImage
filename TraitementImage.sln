@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.438
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TraitementImage", "TraitementImage\TraitementImage.csproj", "{ABD31D56-BD07-4FD4-8CDB-1C15593FE6A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watershed", "Watershed\Watershed.csproj", "{61103683-808B-41E7-86F5-5E36C3850FBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{ABD31D56-BD07-4FD4-8CDB-1C15593FE6A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABD31D56-BD07-4FD4-8CDB-1C15593FE6A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABD31D56-BD07-4FD4-8CDB-1C15593FE6A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61103683-808B-41E7-86F5-5E36C3850FBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61103683-808B-41E7-86F5-5E36C3850FBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61103683-808B-41E7-86F5-5E36C3850FBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61103683-808B-41E7-86F5-5E36C3850FBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
