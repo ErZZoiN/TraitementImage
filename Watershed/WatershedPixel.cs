@@ -10,9 +10,10 @@ namespace Watershed
     {
         public enum label {INIT, MASK, WSHED};
 
-        public static int LAB_INIT = -1;
-        public static int LAB_MASK = -2;
-        public static int LAB_WSHED = -3;
+        public static int INIT = -1;
+        public static int MASK = -2;
+        public static int WSHED = 0;
+        public static int FICTIONOUS = -4;
 
         private int _x;
         private int _y;
@@ -21,12 +22,17 @@ namespace Watershed
         private int _depth;
         private List<WatershedPixel> _neightbours;
 
+        public WatershedPixel(int lab)
+        {
+            Label = lab;
+        }
+
         public WatershedPixel(int x, int y, int height)
         {
             X = x;
             Y = y;
             Height = height;
-            Label = LAB_INIT;
+            Label = INIT;
             Depth = 0;
             Neightbours = new List<WatershedPixel>();
         }
@@ -38,7 +44,7 @@ namespace Watershed
         public int X { get => _x; set => _x = value; }
         public List<WatershedPixel> Neightbours { get => _neightbours; set => _neightbours = value; }
 
-        public void addNeightbour(WatershedPixel n)
+        public void addNeighbour(WatershedPixel n)
         {
             Neightbours.Add(n);
         }
@@ -66,7 +72,7 @@ namespace Watershed
             {
                 WatershedPixel wp = Neightbours.ElementAt(i);
 
-                if (wp.Label != LAB_WSHED)
+                if (wp.Label != WSHED)
                     return false;
             }
 
@@ -82,6 +88,11 @@ namespace Watershed
                 if (Math.Abs(Height - Neightbours.ElementAt(i).Height) < Depth)
                     Depth = Math.Abs(Height - Neightbours.ElementAt(i).Height);
             }
+        }
+
+        public void setLabelToMASK()
+        {
+            Label = MASK;
         }
     }
 }

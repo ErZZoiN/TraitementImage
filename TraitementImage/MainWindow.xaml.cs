@@ -364,12 +364,52 @@ namespace TraitementImage
             int nbLabs = algo.Watershed(imagestruct);
             int[] grayPixels = new int[BitmapWork.PixelWidth * BitmapWork.PixelHeight];
             List<int> listGray = new List<int>();
+            int widthInBytes = 4 * BitmapWork.PixelWidth;
 
-            foreach(WatershedPixel wp in imagestruct.Structure)
+            Console.WriteLine(nbLabs);
+            foreach (WatershedPixel wp in imagestruct.Structure)
             {
-                grayPixels[wp.X + wp.Y * BitmapResult.PixelWidth] = (255 / nbLabs) * (wp.Label - 1);
+                float f = ((float)16777216) / (float)nbLabs;
+                float f2 = f * (float)(wp.Label - 1);
+                int tmp = (int)f2; //Valeur en niveau de gris
+                unchecked
+                {
+                    grayPixels[wp.X + wp.Y * BitmapResult.PixelWidth] = (int)((0xFF000000)| tmp);
+                }
             }
-            l y BitmapResult.WritePixels(new Int32Rect(0, 0, BitmapWork.PixelWidth, BitmapWork.PixelHeight), grayPixels, 4, 0);
+            BitmapResult.WritePixels(new Int32Rect(0, 0, BitmapWork.PixelWidth, BitmapWork.PixelHeight), grayPixels, widthInBytes, 0);
+        }
+
+        private void MeyerButton_Click(object sender, RoutedEventArgs e)
+        {
+            MeyerWatershed algo = new MeyerWatershed();
+            MeyerStruct imagestruct = new MeyerStruct(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)));
+            int nbLabs = algo.watershed(imagestruct);
+            int[] grayPixels = new int[BitmapWork.PixelWidth * BitmapWork.PixelHeight];
+            List<int> listGray = new List<int>();
+            int widthInBytes = 4 * BitmapWork.PixelWidth;
+
+            Console.WriteLine(nbLabs);
+            foreach (WatershedPixel wp in imagestruct.Structure)
+            {
+                int tmp;
+                if(wp.Label == WatershedPixel.WSHED && !(wp.allNeightboursAreWSHED()))
+                {
+                    tmp = 255;
+                }
+                else
+                {
+                    float f = ((float)16777216) / (float)nbLabs;
+                    float f2 = f * (float)(wp.Label - 1);
+                    tmp = (int)f2; //Valeur en niveau de gris
+                }
+
+                unchecked
+                {
+                    grayPixels[wp.X + wp.Y * BitmapResult.PixelWidth] = (int)((0xFF000000) | tmp);
+                }
+            }
+            BitmapResult.WritePixels(new Int32Rect(0, 0, BitmapWork.PixelWidth, BitmapWork.PixelHeight), grayPixels, widthInBytes, 0);
         }
     }
 }

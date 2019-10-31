@@ -18,16 +18,17 @@ namespace Watershed
             //Remplissage du tableau
             for(int y = 0;y<image.Height;y++)
             {
-                for(int x=0;x<image.Height;x++)
+                for(int x=0;x<image.Width;x++)
                 {
-                    Structure[x, y] = new WatershedPixel(x, y, image.GetPixel(x, y).R);
+                    int gsv = (image.GetPixel(x, y).R + image.GetPixel(x, y).G + image.GetPixel(x, y).B) / 3;
+                    Structure[x, y] = new WatershedPixel(x, y, gsv);
                 }
             }
 
             //Références des voisins
             for (int y = 0; y < image.Height; y++)
             {
-                for (int x = 0; x < image.Height; x++)
+                for (int x = 0; x < image.Width; x++)
                 {
                     WatershedPixel wp = Structure[x, y];
 
@@ -35,10 +36,14 @@ namespace Watershed
                     {
                         for (int j = -1; j < 2; j++)
                         {
-                            try
+                            if (i != 0 || j != 0)
                             {
-                                wp.addNeightbour(Structure[x + i, y + j]);
-                            } catch(IndexOutOfRangeException e) { }
+                                try
+                                {
+                                    wp.addNeighbour(Structure[x + i, y + j]);
+                                }
+                                catch (IndexOutOfRangeException e) { }
+                            }
                         }
                     }
                     wp.initDepth();

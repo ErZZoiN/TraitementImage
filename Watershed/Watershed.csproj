@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MeyerStruct.cs" />
+    <Compile Include="MeyerWatershed.cs" />
     <Compile Include="WatershedAlgorithm.cs" />
     <Compile Include="WatershedPixel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

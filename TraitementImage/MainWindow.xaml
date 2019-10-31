@@ -79,10 +79,11 @@
                             Content="Seuillage"
                             Click="Threshold_Click"/>
                     <Button x:Name="WatershedButton"
-                            Content="WATERSHED !"
-                            Click="WatershedButton_Click"
-                            HorizontalAlignment="Center"
-                            Width="200"/>
+                            Content="spanning tree Watershed"
+                            Click="WatershedButton_Click"/>
+                    <Button x:Name="MeyerButton"
+                            Content="Meyer Watershed"
+                            Click="MeyerButton_Click"/>
                 </StackPanel>
                 <Button x:Name="clip"
                         Grid.Column="1"

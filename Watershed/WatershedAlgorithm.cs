@@ -19,10 +19,10 @@ namespace Watershed
             int nbLabs = 0;
             foreach(WatershedPixel wp in image.Structure)
             {
-                if(wp.Label == WatershedPixel.LAB_INIT)
+                if(wp.Label == WatershedPixel.INIT)
                 {
                     StreamRet ret = Stream(image, wp);
-                    if(ret.Lab==WatershedPixel.LAB_INIT) //Alors on n'est pas tombé sur un pixel déjà labellé i.e le stream est un inf-stream.
+                    if(ret.Lab==WatershedPixel.INIT) //Alors on n'est pas tombé sur un pixel déjà labellé i.e le stream est un inf-stream.
                     {
                         nbLabs++;
                         foreach(WatershedPixel wp2 in ret.Stream) //On initialise le label des pixels de l'inf-stream à un nouveau label
@@ -61,7 +61,7 @@ namespace Watershed
                 WatershedPixel bufferPix = closestNeightbours(y, stream);
                 while(breadth_first && (bufferPix!=null))
                 {
-                    if (bufferPix.Label != WatershedPixel.LAB_INIT) //Alors bufferPix est déjà labellé, et c'est le label de notre currentPixel
+                    if (bufferPix.Label != WatershedPixel.INIT) //Alors bufferPix est déjà labellé, et c'est le label de notre currentPixel
                         return new StreamRet()
                         {
                             Stream = stream,
@@ -82,14 +82,13 @@ namespace Watershed
                     }
                     bufferPix = closestNeightbours(y, stream);
                 }
-
             }
 
 
             return new StreamRet() //On est arrivé a un minimum local
             {
                 Stream=stream,
-                Lab=WatershedPixel.LAB_INIT
+                Lab=WatershedPixel.INIT
             };
         }
 
