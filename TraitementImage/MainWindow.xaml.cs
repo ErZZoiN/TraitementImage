@@ -17,6 +17,7 @@ using System.IO;
 using System.Windows.Controls.Primitives;
 using System.Drawing;
 using System.Drawing.Imaging;
+using Watershed;
 
 namespace TraitementImage
 {
@@ -354,6 +355,21 @@ namespace TraitementImage
             }
             else if (listFilter.SelectedValue.ToString() != "Moyen")
                 dimFilter.IsEnabled = false;
+        }
+
+        private void WatershedButton_Click(object sender, RoutedEventArgs e)
+        {
+            WatershedAlgorithm algo = new WatershedAlgorithm();
+            WatershedStructure imagestruct = new WatershedStructure(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)));
+            int nbLabs = algo.Watershed(imagestruct);
+            int[] grayPixels = new int[BitmapWork.PixelWidth * BitmapWork.PixelHeight];
+            List<int> listGray = new List<int>();
+
+            foreach(WatershedPixel wp in imagestruct.Structure)
+            {
+                grayPixels[wp.X + wp.Y * BitmapResult.PixelWidth] = (255 / nbLabs) * (wp.Label - 1);
+            }
+            l y BitmapResult.WritePixels(new Int32Rect(0, 0, BitmapWork.PixelWidth, BitmapWork.PixelHeight), grayPixels, 4, 0);
         }
     }
 }

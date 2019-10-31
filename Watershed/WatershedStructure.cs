@@ -20,7 +20,7 @@ namespace Watershed
             {
                 for(int x=0;x<image.Height;x++)
                 {
-                    Structure[x, y] = new WatershedPixel(x, y, image.GetPixel(x, y));
+                    Structure[x, y] = new WatershedPixel(x, y, image.GetPixel(x, y).R);
                 }
             }
 
@@ -37,7 +37,7 @@ namespace Watershed
                         {
                             try
                             {
-                                wp.addNeightbour(Structure[x+i, y+j]):
+                                wp.addNeightbour(Structure[x + i, y + j]);
                             } catch(IndexOutOfRangeException e) { }
                         }
                     }

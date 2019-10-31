@@ -130,5 +130,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Watershed\Watershed.csproj">
+      <Project>{61103683-808b-41e7-86f5-5e36c3850fbc}</Project>
+      <Name>Watershed</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
