@@ -75,6 +75,7 @@
     </ApplicationDefinition>
     <Compile Include="GaussianFilter.cs" />
     <Compile Include="Kernel.cs" />
+    <Compile Include="KirschFilter.cs" />
     <Compile Include="LaplacianFilter.cs" />
     <Compile Include="MeanFilter.cs" />
     <Compile Include="OperationLibrary.cs" />

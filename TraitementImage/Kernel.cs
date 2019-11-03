@@ -43,12 +43,12 @@ namespace TraitementImage
                         {
                             try
                             {
-                                newval += src.GetPixel(i + x, j + y).R * Values[x + ((Width-1) / 2), y + ((Height-1) / 2)];
+                                newval += src.GetPixel((i + x)%src.Width, (j + y)%src.Height).R * Values[x + ((Width-1) / 2), y + ((Height-1) / 2)];
                             }
-                            catch (ArgumentOutOfRangeException e) { };
+                            catch (ArgumentOutOfRangeException e)
+                            { };
                         }
                     }
-                    Console.WriteLine("Coef : " + Coef + "   newval : " + newval);
                     newval = (int)(newval/Coef);
                     newval = Math.Abs(newval);
                     if (newval > 255)

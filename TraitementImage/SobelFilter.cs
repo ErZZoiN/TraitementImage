@@ -20,9 +20,9 @@ namespace TraitementImage
                 for (int j = 0; j < Width; j++)
                 {
                     if (vertical)
-                        Values[i, j] = val + (j % 2);
+                        Values[i, j] = val + val*(j % 2);
                     else
-                        Values[j, i] = val + (j % 2);
+                        Values[j, i] = val + val*(j % 2);
                 }
             }
         }

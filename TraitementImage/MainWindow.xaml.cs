@@ -286,8 +286,41 @@ namespace TraitementImage
 
         private void Filter_Click(object sender, RoutedEventArgs e)
         {
+            if (listFilter.SelectedValue.ToString() == "Kirsch")
+            {
+                List<Kernel> kirschKernels = new List<Kernel>();
+                for (int i = 1; i < 9; i++)
+                    kirschKernels.Add(new KirschFilter(i));
+
+                List<Bitmap> kirschBitmap = new List<Bitmap>();
+                for (int i = 0; i < 8; i++)
+                    kirschBitmap.Add(kirschKernels.ElementAt(i).filter(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork))));
+
+                Bitmap bmp = new Bitmap(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)));
+
+                for(int i=0;i<bmp.Width;i++)
+                {
+                    for(int j=0;j<bmp.Height;j++)
+                    {
+                        int max = 0;
+                        //trouver le max
+                        for(int n = 0;n<8; n++)
+                        {
+                            if (kirschBitmap.ElementAt(n).GetPixel(i, j).R > max)
+                                max = kirschBitmap.ElementAt(n).GetPixel(i, j).R;
+                        }
+
+
+                        bmp.SetPixel(i, j, System.Drawing.Color.FromArgb(max, max, max));
+                    }
+                }
+                BitmapResult = new WriteableBitmap(ToBitmapImage(bmp));
+                applyChange();
+                return;
+            }
+
             Kernel k;
-            if(listFilter.SelectedValue.ToString() == "Gauss")
+            if (listFilter.SelectedValue.ToString() == "Gauss")
             {
                 k = new GaussianFilter(float.Parse(dimFilter.Text));
             }
@@ -407,6 +440,39 @@ namespace TraitementImage
                 unchecked
                 {
                     grayPixels[wp.X + wp.Y * BitmapResult.PixelWidth] = (int)((0xFF000000) | tmp);
+                }
+            }
+            BitmapResult.WritePixels(new Int32Rect(0, 0, BitmapWork.PixelWidth, BitmapWork.PixelHeight), grayPixels, widthInBytes, 0);
+        }
+
+        private void WatershedLine_Click(object sender, RoutedEventArgs e)
+        {
+            WatershedAlgorithm algo = new WatershedAlgorithm(winPick.Value.Value);
+            WatershedStructure imagestruct = new WatershedStructure(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)));
+            int nbLabs = algo.Watershed(imagestruct);
+            int[] grayPixels = new int[BitmapWork.PixelWidth * BitmapWork.PixelHeight];
+            List<int> listGray = new List<int>();
+            int widthInBytes = 4 * BitmapWork.PixelWidth;
+
+            foreach (WatershedPixel wp in imagestruct.Structure)
+            {
+                foreach(WatershedPixel tmp in wp.Neightbours)
+                {
+                    if(tmp.Label != wp.Label)
+                    {
+                        unchecked
+                        {
+                            grayPixels[wp.X + wp.Y * BitmapResult.PixelWidth] = (int)(0xFF000000);
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        unchecked
+                        {
+                            grayPixels[wp.X + wp.Y * BitmapResult.PixelWidth] = (int)(0xFFFFFFFF);
+                        }
+                    }
                 }
             }
             BitmapResult.WritePixels(new Int32Rect(0, 0, BitmapWork.PixelWidth, BitmapWork.PixelHeight), grayPixels, widthInBytes, 0);
