@@ -8,10 +8,21 @@ namespace Watershed
 {
     public class WatershedAlgorithm
     {
+        public static int WINDOW = 10;
+
+        private int _window;
+
+        public int Window { get => _window; set => _window = value; }
+
         public struct StreamRet
         {
             public List<WatershedPixel> Stream;
             public int Lab;
+        }
+
+        public WatershedAlgorithm(int win)
+        {
+            Window = win;
         }
 
         public int Watershed(WatershedStructure image)
@@ -96,9 +107,15 @@ namespace Watershed
         {
             foreach (WatershedPixel wp in y.Neightbours)
             {
-                if (stream.IndexOf(wp) == -1 && Math.Abs(wp.Height - y.Height) == y.Depth)
+                if (stream.IndexOf(wp) == -1 && (wp.Height +Window >= y.Depth && wp.Height-Window<= y.Depth))
                     return wp;
             }
+
+            /*foreach (WatershedPixel wp in y.Neightbours)
+            {
+                if (stream.IndexOf(wp) == -1 && ((Math.Abs(wp.Height - y.Height) - Window) <= y.Depth && (Math.Abs(wp.Height - y.Height) - Window) >= y.Depth))
+                    return wp;
+            }*/
 
             return null;
         }

@@ -84,6 +84,8 @@
                     <Button x:Name="MeyerButton"
                             Content="Meyer Watershed"
                             Click="MeyerButton_Click"/>
+                    <wpfex:IntegerUpDown x:Name="winPick"
+                                         Value="0"/>
                 </StackPanel>
                 <Button x:Name="clip"
                         Grid.Column="1"

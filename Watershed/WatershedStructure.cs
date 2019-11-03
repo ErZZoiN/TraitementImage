@@ -49,8 +49,6 @@ namespace Watershed
                     wp.initDepth();
                 }
             }
-
-            //SORT STRUCTURE ?
         }
         public WatershedPixel[,] Structure { get => _structure; set => _structure = value; }
     }

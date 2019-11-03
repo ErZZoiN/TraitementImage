@@ -81,13 +81,20 @@ namespace Watershed
 
         public void initDepth()
         {
-            Depth = Math.Abs(Height - Neightbours.ElementAt(0).Height);
+            //Depth = minimum
+            Depth = Height;
+            for (int i = 0; i < Neightbours.Count; i++)
+            {
+                if (Neightbours.ElementAt(i).Height < Depth)
+                    Depth = Neightbours.ElementAt(i).Height;
+            }
 
+            /*Depth = Math.Abs(Height - Neightbours.ElementAt(0).Height);
             for(int i=1;i<Neightbours.Count;i++)
             {
-                if (Math.Abs(Height - Neightbours.ElementAt(i).Height) < Depth)
+                if(Math.Abs(Height - Neightbours.ElementAt(i).Height) < Depth)
                     Depth = Math.Abs(Height - Neightbours.ElementAt(i).Height);
-            }
+            }*/
         }
 
         public void setLabelToMASK()

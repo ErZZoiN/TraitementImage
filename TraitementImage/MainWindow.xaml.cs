@@ -359,7 +359,7 @@ namespace TraitementImage
 
         private void WatershedButton_Click(object sender, RoutedEventArgs e)
         {
-            WatershedAlgorithm algo = new WatershedAlgorithm();
+            WatershedAlgorithm algo = new WatershedAlgorithm(winPick.Value.Value);
             WatershedStructure imagestruct = new WatershedStructure(BitmapImage2Bitmap(ConvertWriteableBitmapToBitmapImage(BitmapWork)));
             int nbLabs = algo.Watershed(imagestruct);
             int[] grayPixels = new int[BitmapWork.PixelWidth * BitmapWork.PixelHeight];
